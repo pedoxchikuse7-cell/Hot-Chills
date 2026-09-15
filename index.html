@@ -159,15 +159,23 @@ function signUp() {
 }
 
 function login() {
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
+  if (!email || !password) {
+    document.getElementById("status").textContent =
+      "Please enter your email and password.";
+    return;
+  }
+
   auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
+    .then(function(userCredential) {
+      document.getElementById("status").textContent = "Login successful!";
       showChat();
     })
-    .catch(error => {
-      document.getElementById("status").textContent = error.message;
+    .catch(function(error) {
+      document.getElementById("status").textContent =
+        "Login error: " + error.message;
     });
   }
 
