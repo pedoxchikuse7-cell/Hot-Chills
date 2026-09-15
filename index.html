@@ -1,3 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hot Chills</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f2f2f2;
+    }
+
+    .app {
+      max-width: 500px;
+      height: 100vh;
+      margin: auto;
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 18px;
+    }
+
+    .header h1 {
+      margin: 0;
+    }
+
+    .login {
+      padding: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 7px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #111827;
+      color: white;
+      margin: 5px 2px;
+    }
+
+    #chatScreen {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+    }
+
+    #messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .message {
+      background: #eeeeee;
+      padding: 10px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+
+    .send {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+    }
+
+    .send input {
+      flex: 1;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <h1>🔥 Hot Chills</h1>
+  </div>
+
+  <div id="loginScreen" class="login">
+    <h2>Welcome to Hot Chills</h2>
+
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="signUp()">Create Account</button>
+    <button onclick="login()">Login</button>
+
+    <p id="status"></p>
+  </div>
+
+  <div id="chatScreen">
+
+    <div id="messages"></div>
+
+    <div class="send">
+      <input id="messageInput" type="text" placeholder="Type a message...">
+      <button onclick="sendMessage()">➤</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<script>
+
 const firebaseConfig = {
   apiKey: "AIzaSyAA3f1o_CseC0R1QYEh9psrpicTMlk3aTE",
   authDomain: "hot-chills.firebaseapp.com",
@@ -6,3 +135,38 @@ const firebaseConfig = {
   messagingSenderId: "709483563987",
   appId: "1:709483563987:web:65c42c471ee2feb29b3d26"
 };
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+function signUp() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      showChat();
+    })
+    .catch(error => {
+      document.getElementById("status").textContent = error.message;
+    });
+}
+
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      showChat();
+    })
+    .catch(error => {
+      document.getElementById("status").textContent = error.message;
+    });
+}
+
+function showChat() {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("chatScreen").style.display = "flex
