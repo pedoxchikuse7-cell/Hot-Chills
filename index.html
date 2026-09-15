@@ -140,7 +140,11 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-
+auth.onAuthStateChanged(function(user) {
+  if (user) {
+    showChat();
+  }
+});
 function signUp() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
