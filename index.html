@@ -135,7 +135,6 @@ const firebaseConfig = {
   messagingSenderId: "709483563987",
   appId: "1:709483563987:web:65c42c471ee2feb29b3d26"
 };
-
 firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
@@ -145,6 +144,7 @@ auth.onAuthStateChanged(function(user) {
     showChat();
   }
 });
+
 function signUp() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
